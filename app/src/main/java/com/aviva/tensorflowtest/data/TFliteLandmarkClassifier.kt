@@ -65,6 +65,12 @@ class TFliteLandmarkClassifier(
                     score = category.score
                 )
             }
+
+            /*
+             * Aquí se hace la distinción de la lista de resultados para que solo nos
+             * entregue una respuesta
+             */
+
         }?.distinctBy { it.name } ?: emptyList()
 
     }
