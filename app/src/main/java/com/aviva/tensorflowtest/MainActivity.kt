@@ -1,5 +1,7 @@
 package com.aviva.tensorflowtest
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,13 +14,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.aviva.tensorflowtest.ui.theme.TensorflowTestTheme
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -26,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.aviva.tensorflowtest.data.TFliteLandmarkClassifier
 import com.aviva.tensorflowtest.domain.Classification
@@ -36,6 +36,11 @@ import com.aviva.tensorflowtest.presentation.LandmarkImageAnalyzer
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(!hasCameraPermission()){
+            ActivityCompat.requestPermissions(
+                this, arrayOf(Manifest.permission.CAMERA),0
+            )
+        }
         setContent {
             TensorflowTestTheme {
 
@@ -92,4 +97,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+    private fun hasCameraPermission() = ContextCompat.checkSelfPermission(
+        this, Manifest.permission.CAMERA
+    ) == PackageManager.PERMISSION_GRANTED
 }
